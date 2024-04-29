@@ -21,7 +21,7 @@ if __name__ == "__main__":
         print("Shift amount must be an integer.")
         sys.exit(1)
 
-    message = raw_input("").upper()
+    message = input("").upper()
 
     encoded_message = ""
     block_count = 0
