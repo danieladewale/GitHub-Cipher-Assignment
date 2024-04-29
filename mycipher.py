@@ -2,39 +2,31 @@ import sys
 
 def caesar_cipher(input_string, shift):
     output_string = ""
+    block_size = 5
+    count = 0
 
     for char in input_string:
         if char.isalpha():
             start = ord('A') if char.isupper() else ord('a')
-            output_string += chr((ord(char) - start + shift) % 26 + start)
+            new_char = chr((ord(char) - start + shift) % 26 + start).upper()
 
-    return output_string
+            output_string += new_char
+            count += 1
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python main.py <shift_amount>")
-        sys.exit(1)
+            if count == block_size:
+                output_string += ' '
+                count = 0
 
-    try:
-        shift_amount = int(sys.argv[1]) % 26
-    except ValueError:
-        print("Shift amount must be an integer.")
-        sys.exit(1)
+    return output_string.strip()
 
-    message = input("").upper()
+if len(sys.argv) != 2:
+    print("Usage: python mycipher.py <shift>".upper())
+    sys.exit(1)
 
-    encoded_message = ""
-    block_count = 0
-    blocks_per_line = 10
-    for char in message:
-        if char.isalpha():
-            encoded_message += caesar_cipher(char, shift_amount)
-            if len(encoded_message) % 5 == 0:
-                print(encoded_message),
-                block_count += 1
-                if block_count % blocks_per_line == 0:
-                    print("")
-                encoded_message = ''
+shift = int(sys.argv[1]) % 26
 
-    if encoded_message:
-        print(encoded_message)
+message = sys.stdin.read().rstrip()
+
+encrypted_message = caesar_cipher(message, shift)
+
+print(encrypted_message)
